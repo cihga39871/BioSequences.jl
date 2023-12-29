@@ -16,9 +16,20 @@ function Base.resize!(seq::LongSequence{A}, size::Integer, force::Bool=false) wh
             resize!(seq.data, seq_data_len(A, size))
         end
         seq.len = size
-        return seq
+        bitsafe!(seq)
     end
 end
+# function Base.resize!(seq::LongSequence{A}, size::Integer, force::Bool=false) where {A}
+#     if size < 0
+#         throw(ArgumentError("size must be non-negative"))
+#     else
+#         if force | (seq_data_len(A, size) > seq_data_len(A, length(seq)))
+#             resize!(seq.data, seq_data_len(A, size))
+#         end
+#         seq.len = size
+#         return seq
+#     end
+# end
 
 """
     reverse!(seq::LongSequence)
@@ -145,17 +156,30 @@ function complement!(s::LongSubSeq{A}) where {A <: NucleicAcidAlphabet}
     return s
 end
 
+# function reverse_complement!(seq::LongSequence{<:NucleicAcidAlphabet})
+#     pred = x -> complement_bitpar(x, Alphabet(seq))
+#     reverse_data!(pred, seq.data, seq_data_len(seq) % UInt, BitsPerSymbol(seq))
+#     return zero_offset!(seq)
+# end
 function reverse_complement!(seq::LongSequence{<:NucleicAcidAlphabet})
     pred = x -> complement_bitpar(x, Alphabet(seq))
     reverse_data!(pred, seq.data, seq_data_len(seq) % UInt, BitsPerSymbol(seq))
-    return zero_offset!(seq)
+    zero_offset!(seq)
+    bitsafe!(seq)
 end
 
+# function reverse_complement(seq::LongSequence{<:NucleicAcidAlphabet})
+#     cp = typeof(seq)(undef, unsigned(length(seq)))
+#     pred = x -> complement_bitpar(x, Alphabet(seq))
+#     reverse_data_copy!(pred, cp.data, seq.data, seq_data_len(seq) % UInt, BitsPerSymbol(seq))
+#     return zero_offset!(cp)
+# end
 function reverse_complement(seq::LongSequence{<:NucleicAcidAlphabet})
     cp = typeof(seq)(undef, unsigned(length(seq)))
     pred = x -> complement_bitpar(x, Alphabet(seq))
     reverse_data_copy!(pred, cp.data, seq.data, seq_data_len(seq) % UInt, BitsPerSymbol(seq))
-    return zero_offset!(cp)
+    zero_offset!(cp)
+    bitsafe!(cp)
 end
 
 function Random.shuffle!(seq::LongSequence)

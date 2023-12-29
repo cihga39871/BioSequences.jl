@@ -1,5 +1,7 @@
 # <img src="./sticker.svg" width="30%" align="right" /> BioSequences
 
+> This project is modified for Atria use ONLY. See `longsequences/bitsafe_for_atria.jl`.
+
 [![Latest Release](https://img.shields.io/github/release/BioJulia/BioSequences.jl.svg)](https://github.com/BioJulia/BioSequences.jl/releases/latest)
 [![MIT license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/BioJulia/BioSequences.jl/blob/master/LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://biojulia.github.io/BioSequences.jl/stable)

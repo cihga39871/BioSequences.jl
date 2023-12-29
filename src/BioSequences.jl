@@ -307,6 +307,10 @@ function Base.findall(pat, seq::BioSequence, rng::UnitRange{Int}; overlap::Bool 
     return map(x->parentindices(v)[1][x], itr)
 end
 
+# For Atria: longsequences/bitsafe_for_atria.jl
+export isbitsafe, 
+bitsafe!
+
 include("workload.jl")
 
 end  # module BioSequences
