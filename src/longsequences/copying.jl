@@ -166,7 +166,7 @@ end
 #     end
 #     @assert false "Expected error in encoding"
 # end
-@noinline function BioSequences.throw_encode_error(A::BioSequences.Alphabet, src::AbstractArray{UInt8}, soff::Integer)
+@noinline function throw_encode_error(A::BioSequences.Alphabet, src::AbstractArray{UInt8}, soff::Integer)
     for i in 1:div(64, BioSequences.bits_per_symbol(A))
         index = soff + i - 1
         sym = src[index]
