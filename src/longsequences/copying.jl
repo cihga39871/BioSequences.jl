@@ -171,6 +171,16 @@ end
         index = soff + i - 1
         sym = src[index]
         if BioSequences.ascii_encode(A, sym) & 0x80 == 0x80
+            # check whether it is \r.
+            if sym == 0x0d
+                error("""Unsupported line break: the line break of input file is '\\r\\n' rather than '\\n'. 
+                       You can convert the line break using one of the following bash code:
+                       - `cat        FASTQ     | tr -d '\\r'          > NEW_FASTQ`        (  uncompressed)
+                       - `pigz   -cd FASTQ.gz  | tr -d '\\r' | pigz   > NEW_FASTQ.gz`     ( gz compressed)
+                       - `pbzip2 -cd FASTQ.bz2 | tr -d '\\r' | pbzip2 > NEW_FASTQ.pbzip2` (bz2 compressed)
+                """)
+            end
+
             # find the context around the error: one previous line and the current line
             nsrc = length(src)
             context_start = soff + i - 2
